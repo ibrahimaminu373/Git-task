@@ -1,0 +1,26 @@
+#!/bin/bash
+
+read -p "Enter year: " year
+
+BASE_DIR="$(pwd)"
+
+BASE_URL="https://raw.githubusercontent.com/databricks/Spark-The-Definitive-Guide/refs/heads/master/data/retail-data/by-day"
+
+for MONTH in {1..12}; do
+
+    new_month=$(printf "%02d" "$MONTH")
+
+    mkdir -p "$BASE_DIR/$year/$new_month"
+
+    for DAY in {1..31}; do
+
+        new_day=$(printf "%02d" "$DAY")
+
+        filename="${year}-${new_month}-${new_day}.csv"
+
+        output_file="$BASE_DIR/$year/$new_month/$filename"
+
+        curl -o "$output_file" "$BASE_URL/$filename"
+
+    done
+done
